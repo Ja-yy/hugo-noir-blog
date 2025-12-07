@@ -1,17 +1,72 @@
 {{ define "main" }}
-<div class="container mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold mb-8">{{ .Title }}</h1>
-    <div class="space-y-6">
+<div class="max-w-4xl mx-auto px-4 py-12">
+    <header class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold mb-12 text-text-primary-light dark:text-text-primary-dark">
+            Posts tagged: <span class="text-accent-light dark:text-accent-dark">{{ .Title }}</span>
+        </h1>
+        <p class="text-text-secondary-light dark:text-text-secondary-dark text-lg">
+            {{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }} found
+        </p>
+    </header>
+
+    <div class="space-y-8">
         {{ range .Pages }}
-        <article class="border border-gray-700 rounded-lg p-6 bg-[#1a1a1a]">
-            <h2 class="text-2xl font-semibold mb-2">
-                <a href="{{ .RelPermalink }}" class="hover:text-gray-300">{{ .Title }}</a>
-            </h2>
-            {{ if .Description }}
-            <p class="text-gray-400">{{ .Description }}</p>
+        <article class="group border-b border-border-primary-light dark:border-border-primary-dark pb-8 last:border-b-0">
+            <div class="flex items-center gap-2 text-text-secondary-light dark:text-text-secondary-dark text-sm mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+            </div>
+
+            <a href="{{ .Permalink }}" class="block group">
+                <h2 class="text-2xl md:text-3xl font-bold mb-3 text-text-primary-light dark:text-text-primary-dark group-hover:text-accent-light dark:group-hover:text-accent-dark transition-colors duration-300">
+                    {{ .Title }}
+                </h2>
+            </a>
+
+            {{ if .Params.description }}
+            <p class="text-text-secondary-light dark:text-text-secondary-dark mb-4 text-lg leading-relaxed">
+                {{ .Params.description }}
+            </p>
+            {{ else }}
+            <p class="text-text-secondary-light dark:text-text-secondary-dark mb-4 text-lg leading-relaxed">
+                {{ .Summary | truncate 200 }}
+            </p>
             {{ end }}
+
+            {{ if .Params.tags }}
+            <div class="flex flex-wrap gap-2 mb-4">
+                {{ range .Params.tags }}
+                <a href="{{ "/tags/" | absURL }}{{ . | urlize }}/" class="px-3 py-1 bg-bg-primary-light dark:bg-bg-tertiary-dark text-text-secondary-light dark:text-text-secondary-dark border border-border-primary-light dark:border-border-primary-dark rounded-full text-sm font-medium transition-all duration-300 hover:border-accent-light dark:hover:border-accent-dark hover:text-accent-light dark:hover:text-accent-dark">
+                    {{ . }}
+                </a>
+                {{ end }}
+            </div>
+            {{ end }}
+
+            <a href="{{ .Permalink }}" class="inline-flex items-center gap-2 text-accent-light dark:text-accent-dark hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors duration-300 font-medium">
+                Read more
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m9 18 6-6-6-6"></path>
+                </svg>
+            </a>
         </article>
         {{ end }}
     </div>
+
+    <!-- Back to Blogs Link -->
+    <div class="mt-12 pt-8 border-t border-border-primary-light dark:border-border-primary-dark">
+        <a href="{{ "/blogs/" | absURL }}" class="inline-flex items-center gap-2 text-accent-light dark:text-accent-dark hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors duration-300 font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 19-7-7 7-7"></path>
+                <path d="M19 12H5"></path>
+            </svg>
+            <span>Back to All Blogs</span>
+        </a>
+    </div>
 </div>
-{{ end }} 
+{{ end }}

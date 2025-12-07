@@ -4,9 +4,9 @@
 </head>
 <div class="w-full md:w-4/5 lg:w-3/5 mx-auto px-14 py-12">
     <!-- Hero Section -->
-    {{ $authorData := index site.Data .Language.Lang "author" }}
+    {{ $authorData := index site.Data "author" }}
     {{ $author := cond (and $authorData $authorData.author) $authorData.author site.Params }}
-    
+
     {{ with $author }}
     <section class="mb-16">
         <div class="max-w-3xl ml-0 p-4 pb-2 border border-border-primary-light dark:border-border-primary-dark rounded-lg bg-bg-secondary-light dark:bg-bg-secondary-dark shadow-lg relative">
@@ -49,7 +49,7 @@
     {{ end }}
 
     <!-- Tech Stack -->
-    {{ with (index site.Data .Language.Lang "tech") }}
+    {{ with (index site.Data "tech") }}
         <section class="mb-20">
             <h2 class="text-4xl font-bold mb-2 relative">{{ T "whatIWorkWith" }}</h2>
             <div class="tech-carousel">
@@ -57,14 +57,22 @@
                     <div class="carousel-track carousel-track-left-to-right">
                         {{- range .row1 -}}
                             <div class="carousel-item">
-                                <i class="{{ .icon }}"></i>
+                                {{ if .svg }}
+                                    {{ .svg | safeHTML }}
+                                {{ else }}
+                                    <i class="{{ .icon }}"></i>
+                                {{ end }}
                                 <span class="text-xl">{{ .name }}</span>
                             </div>
                         {{- end -}}
                         {{/* Duplicates */}}
                         {{- range .row1 -}}
                             <div class="carousel-item">
-                                <i class="{{ .icon }}"></i>
+                                {{ if .svg }}
+                                    {{ .svg | safeHTML }}
+                                {{ else }}
+                                    <i class="{{ .icon }}"></i>
+                                {{ end }}
                                 <span class="text-xl">{{ .name }}</span>
                             </div>
                         {{- end -}}
@@ -75,14 +83,22 @@
                     <div class="carousel-track-reverse">
                         {{- range .row2 -}}
                             <div class="carousel-item">
-                                <i class="{{ .icon }}"></i>
+                                {{ if .svg }}
+                                    {{ .svg | safeHTML }}
+                                {{ else }}
+                                    <i class="{{ .icon }}"></i>
+                                {{ end }}
                                 <span class="text-xl">{{ .name }}</span>
                             </div>
                         {{- end -}}
                         {{/* Duplicates */}}
                         {{- range .row2 -}}
                             <div class="carousel-item">
-                                <i class="{{ .icon }}"></i>
+                                {{ if .svg }}
+                                    {{ .svg | safeHTML }}
+                                {{ else }}
+                                    <i class="{{ .icon }}"></i>
+                                {{ end }}
                                 <span class="text-xl">{{ .name }}</span>
                             </div>
                         {{- end -}}
@@ -91,11 +107,11 @@
             </div>
         </section>
     {{ else }}
-        {{ warnf "No tech stack data found for language %q. Please define either data/%s/tech.(yaml|toml|json) or params.tech in config." .Language.Lang }}
+        {{ warnf "No tech stack data found. Please define either data/tech.(yaml|toml|json) or params.tech in config." }}
     {{ end }}
 
     <!-- Experience Section -->
-    {{ $experienceData := index site.Data .Language.Lang "experience" }}
+    {{ $experienceData := index site.Data "experience" }}
     {{ $experience := cond (and $experienceData $experienceData.experience) $experienceData.experience site.Params.experience }}
 
     {{ with $experience }}
@@ -130,44 +146,52 @@
         </div>
     </section>
     {{ else }}
-    {{ warnf "No experience data found for language %q. Please define either data/%s/experience.(yaml|toml|json) or params.experience in config." .Language.Lang .Language.Lang }}
+    {{ warnf "No experience data found. Please define either data/experience.(yaml|toml|json) or params.experience in config." }}
     {{ end }}
 
     <!-- Projects Section -->
-    {{ $projectsData := index site.Data .Language.Lang "projects" }}
-    {{ $projects := cond (and $projectsData $projectsData.projects) $projectsData.projects site.Params.projects }}
-
-    {{ with $projects }}
+    {{ $projectsSection := site.GetPage "section" "projects" }}
+    {{ with $projectsSection }}
+    {{ $projects := .Pages }}
+    {{ if $projects }}
     <section class="mt-12 md:mt-20 mb-12 md:mb-20">
         <div class="flex justify-between items-center mb-6 md:mb-8">
             <h2 class="text-2xl md:text-4xl font-bold">{{ T "projectsTitle" }}</h2>
         </div>
         <div class="grid grid-cols-1 gap-6 md:gap-8 max-w-3xl mx-auto">
-            {{ range first 2 . }}
+            {{ range first 2 $projects }}
             <div class="project-card relative overflow-hidden rounded-lg bg-[#121212] border border-gray-700 transition-all duration-300 group">
                 <div class="aspect-w-16 aspect-h-9 overflow-hidden relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 z-10"></div>
-                    <img src="{{ .image }}" alt="{{ .title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    {{ if .Params.image }}
+                    <img src="{{ .Params.image }}" alt="{{ .Title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    {{ end }}
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-60 z-20"></div>
-                    
+
                     <!-- Content that moves up on hover -->
                     <div class="absolute inset-0 z-30 p-4 pb-3 md:p-6 md:pb-4 flex flex-col justify-end transform transition-transform duration-500 translate-y-0 group-hover:translate-y-[-20px]">
-                        <h3 class="text-xl md:text-2xl font-bold mb-1.5 md:mb-2 text-white line-clamp-2">{{ .title }}</h3>
+                        <h3 class="text-xl md:text-2xl font-bold mb-1.5 md:mb-2 text-white line-clamp-2">{{ .Title }}</h3>
+                        {{ if .Params.tech }}
                         <div class="hidden sm:flex flex-wrap gap-1 md:gap-2 mb-1.5 md:mb-3">
-                            {{ $techs := split .tech "," }}
+                            {{ $techs := split .Params.tech "," }}
                             {{ range $tech := $techs }}
-                            <span class="px-1.5 md:px-2 py-0.5 bg-black/30 backdrop-blur-sm rounded-md text-[10px] md:text-xs font-medium text-white">{{ $tech }}</span>
+                            <span class="px-1.5 md:px-2 py-0.5 bg-black/30 backdrop-blur-sm rounded-md text-[10px] md:text-xs font-medium text-white">{{ trim $tech " " }}</span>
                             {{ end }}
                         </div>
-                        <p class="hidden md:block text-sm text-white mb-3 line-clamp-3 md:line-clamp-4">{{ .description }}</p>
-                        
+                        {{ end }}
+                        <p class="hidden md:block text-sm text-white mb-3 line-clamp-3 md:line-clamp-4">
+                            {{ if .Summary }}{{ .Summary | plainify | truncate 150 }}{{ else }}{{ .Content | plainify | truncate 150 }}{{ end }}
+                        </p>
+
                         <!-- Learn More button -->
-                        <a href="{{ .link }}" class="bg-white/90 backdrop-blur-sm hover:bg-white text-black text-xs md:text-sm font-medium py-1 md:py-1.5 px-2 md:px-3 rounded-md inline-block transition-all duration-300 transform opacity-100 md:opacity-0 group-hover:opacity-100 w-fit flex items-center shadow-lg hover:shadow-xl">
+                        {{ if .Params.link }}
+                        <a href="{{ .Params.link }}" class="bg-white/90 backdrop-blur-sm hover:bg-white text-black text-xs md:text-sm font-medium py-1 md:py-1.5 px-2 md:px-3 rounded-md inline-block transition-all duration-300 transform opacity-100 md:opacity-0 group-hover:opacity-100 w-fit flex items-center shadow-lg hover:shadow-xl" target="_blank" rel="noopener noreferrer">
                             {{ T "learnMore" }}
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 ml-1 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
                         </a>
+                        {{ end }}
                     </div>
                 </div>
             </div>
@@ -177,32 +201,33 @@
             </div>
         </div>
     </section>
-    {{ else }}
-    {{ warnf "No project data found for language %q. Please define either data/%s/projects.(yaml|toml|json) or params.projects in config." .Language.Lang .Language.Lang }}
+    {{ end }}
     {{ end }}
 
     <!-- Blog Section -->
-    {{ $blogsData := index site.Data .Language.Lang "blogs" }}
-    {{ $blogs := cond (and $blogsData $blogsData.blogs) $blogsData.blogs site.Params.blogs }}
-    
-    {{ with $blogs }}
+    {{ $blogsSection := site.GetPage "section" "blogs" }}
+    {{ with $blogsSection }}
+    {{ $blogs := .Pages }}
+    {{ if $blogs }}
     <section class="mt-20 mb-20">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-4xl font-bold">{{ T "blogsTitle" }}</h2>
         </div>
         <div class="space-y-8 max-w-3xl mx-auto">
-            {{ range first 3 . }}
+            {{ range first 3 $blogs }}
             <div class="group">
-                <p class="text-gray-400 text-sm mb-1">{{ .date }}</p>
-                <a href="{{ .link }}" class="block group" target="_blank">
+                <p class="text-gray-400 text-sm mb-1">{{ .Date.Format "January 2, 2006" }}</p>
+                <a href="{{ .Permalink }}" class="block group">
                     <h3 class="inline-flex items-center text-xl font-medium text-accent-light dark:text-accent-dark hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors duration-200 mb-3">
-                        {{ .title }}
+                        {{ .Title }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 opacity-70 group-hover:opacity-100 transition-opacity duration-200">
-                            <path d="M7 17l9.2-9.2M17 17V7H7"/>
+                            <path d="m9 18 6-6-6-6"></path>
                         </svg>
                     </h3>
-                </a>    
-                <p class="text-gray-400">{{ .summary }}</p>
+                </a>
+                <p class="text-gray-400">
+                    {{ if .Summary }}{{ .Summary | plainify | truncate 150 }}{{ else }}{{ .Content | plainify | truncate 150 }}{{ end }}
+                </p>
             </div>
             {{ end }}
         </div>
@@ -210,8 +235,7 @@
             <a href="{{ "blogs/" | absLangURL }}" class="text-blue-500 hover:text-blue-400 transition-colors duration-200 text-lg">{{ T "viewAll" }}</a>
         </div>
     </section>
-    {{ else }}
-    {{ warnf "No blog data found for language %q. Please define either data/%s/blogs.(yaml|toml|json) or params.blogs in config." .Language.Lang .Language.Lang }}
+    {{ end }}
     {{ end }}
 </div>
 
@@ -235,15 +259,15 @@
 }
 
 .carousel-track {
-    animation: scroll 45s linear infinite;
+    animation: scroll 20s linear infinite;
 }
 
 .carousel-track-left-to-right {
-    animation: scroll-left-to-right 60s linear infinite;
+    animation: scroll-left-to-right 25s linear infinite;
 }
 
 .carousel-track-reverse {
-    animation: scroll-reverse 45s linear infinite;
+    animation: scroll-reverse 20s linear infinite;
 }
 
 .carousel-item {
@@ -259,6 +283,12 @@
 
 .carousel-item i {
     font-size: 2.25rem;
+}
+
+.carousel-item svg {
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
 }
 
 .carousel-item span {
@@ -300,7 +330,7 @@
 }
 
 .max-w-3xl {
-    border-color: rgba(75, 85, 99, 0.7); 
+    border-color: rgba(75, 85, 99, 0.7);
 }
 
 .project-card {
@@ -320,10 +350,10 @@
 }
 @media (max-width: 767px) {
     .project-card {
-        margin: 0 1rem; 
+        margin: 0 1rem;
     }
     .aspect-w-16 {
-        padding-bottom: 75%; 
+        padding-bottom: 75%;
     }
 }
 
@@ -377,7 +407,7 @@ footer {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--toaster-bg, #333); 
+    background-color: var(--toaster-bg, #333);
     color: var(--toaster-text, white);
     padding: 10px 20px;
     border-radius: 5px;
@@ -413,13 +443,13 @@ function showToaster(message) {
     document.body.appendChild(toaster);
     setTimeout(() => {
         toaster.classList.add('show');
-    }, 10); 
+    }, 10);
     setTimeout(() => {
         toaster.classList.remove('show');
         setTimeout(() => {
             document.body.removeChild(toaster);
-        }, 500); 
-    }, 3000); 
+        }, 500);
+    }, 3000);
 }
 </script>
-{{ end }} 
+{{ end }}

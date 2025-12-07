@@ -1,15 +1,54 @@
 {{ define "main" }}
-<div class="container mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold mb-8">{{ .Title }}</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {{ range .Data.Terms.ByCount }}
-        <div class="border border-gray-700 rounded-lg p-6 bg-[#1a1a1a]">
-            <a href="{{ .Page.RelPermalink }}" class="text-xl font-semibold hover:text-gray-300">
-                {{ .Page.Title }}
-            </a>
-            <span class="text-gray-400 ml-2">({{ .Count }})</span>
-        </div>
+<div class="max-w-4xl mx-auto px-4 py-12">
+  <header class="mb-12">
+    <h1
+      class="text-4xl md:text-5xl font-bold mb-12 text-text-primary-light dark:text-text-primary-dark"
+    >
+      {{ .Title }}
+    </h1>
+    <p class="text-text-secondary-light dark:text-text-secondary-dark text-lg">
+      Browse posts by {{ .Data.Singular }}
+    </p>
+  </header>
+
+  <div class="space-y-6">
+    {{ range .Data.Terms.Alphabetical }}
+    <div
+      class="border border-border-primary-light dark:border-border-primary-dark rounded-lg p-6 bg-bg-primary-light dark:bg-bg-secondary-dark hover:border-accent-light dark:hover:border-accent-dark transition-all duration-300"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <a
+          href="{{ .Page.Permalink }}"
+          class="text-2xl font-semibold text-text-primary-light dark:text-text-primary-dark hover:text-accent-light dark:hover:text-accent-dark transition-colors duration-300"
+        >
+          {{ .Page.Title }}
+        </a>
+        <span
+          class="px-3 py-1 bg-bg-tertiary-dark dark:bg-bg-tertiary-dark text-text-secondary-light dark:text-text-secondary-dark rounded-full text-sm font-medium"
+        >
+          {{ .Count }} {{ if eq .Count 1 }}post{{ else }}posts{{ end }}
+        </span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        {{ range first 3 .Pages }}
+        <a
+          href="{{ .Permalink }}"
+          class="text-text-secondary-light dark:text-text-secondary-dark hover:text-accent-light dark:hover:text-accent-dark transition-colors duration-300 text-sm"
+        >
+          {{ .Title }}
+        </a>
+        {{ if not (eq . (index .Pages 2)) }}
+        <span class="text-text-secondary-light dark:text-text-secondary-dark"
+          >•</span
+        >
+        {{ end }} {{ end }} {{ if gt (len .Pages) 3 }}
+        <span class="text-text-secondary-light dark:text-text-secondary-dark"
+          >...</span
+        >
         {{ end }}
+      </div>
     </div>
+    {{ end }}
+  </div>
 </div>
-{{ end }} 
+{{ end }}
