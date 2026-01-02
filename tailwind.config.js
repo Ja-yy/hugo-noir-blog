@@ -16,9 +16,9 @@ module.exports = {
         'border-primary-light': colors.neutral[300],
         'accent-light': colors.sky[600],
 
-        'bg-primary-dark': '#121212',
+        'bg-primary-dark': '#000000',
         'bg-secondary-dark': '#1a1a1a',
-        'bg-tertiary-dark': '#1a1a1a',  
+        'bg-tertiary-dark': '#1a1a1a',
         'text-primary-dark': colors.neutral[100],
         'text-secondary-dark': colors.neutral[400],
         'border-primary-dark': colors.neutral[700],
@@ -27,4 +27,4 @@ module.exports = {
     },
   },
   plugins: [],
-} 
+}

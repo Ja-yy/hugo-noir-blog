@@ -1,149 +1,108 @@
 {{ define "main" }}
-<div class="max-w-4xl mx-auto px-4 py-12">
+<div class="max-w-6xl mx-auto px-4 py-12">
   <h1
-    class="text-4xl md:text-5xl font-bold mb-12 text-text-primary-light dark:text-text-primary-dark"
+    class="text-5xl md:text-6xl font-bold mb-16 text-text-primary-light dark:text-text-primary-dark"
   >
     {{ .Title }}
   </h1>
-  <div
-    class="mb-12 bg-bg-primary-light dark:bg-bg-secondary-dark p-8 rounded-lg border border-border-primary-light dark:border-border-primary-dark"
-  >
-    <div class="intro-section">
-      <div
-        class="text-text-secondary-light dark:text-text-secondary-dark text-3xl prose prose-invert prose-l max-w-none"
-      >
-        {{ .Content }}
-      </div>
-      <div class="mt-8 text-sl flex flex-wrap gap-4">
-        <div class="stat-box">
-          <div class="stat-number">40+</div>
-          <div class="stat-label">Technologies Used</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">35+</div>
-          <div class="stat-label">Projects Completed</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">3+</div>
-          <div class="stat-label">Recommendations Received</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">20+</div>
-          <div class="stat-label">Courses Completed</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="space-y-8">
+
+  <div class="experience-timeline">
     {{ $experienceData := index site.Data "experience" }} {{ with
     $experienceData.experience }} {{ range . }}
-    <div
-      class="group relative pl-8 before:content-[''] before:absolute before:left-0 before:top-0 before:w-[2px] before:h-full before:bg-border-secondary-light dark:before:bg-border-secondary-dark before:rounded-full"
-    >
-      <div
-        class="absolute -left-1.5 top-0 w-2 h-2 bg-border-secondary-light dark:bg-border-secondary-dark rounded-full"
-      ></div>
-      <div
-        class="p-6 rounded-lg bg-bg-primary-light dark:bg-bg-secondary-dark transition-all duration-300 border border-border-primary-light dark:border-border-primary-dark"
-      >
-        <div class="flex-grow">
+    <div class="experience-item group">
+      <div class="timeline-marker">
+        <div class="timeline-dot"></div>
+        <div class="timeline-line"></div>
+      </div>
+
+      <div class="experience-content">
+        <div class="experience-header">
           {{ if .company }}
-          <div
-            class="text-text-secondary-light dark:text-text-secondary-dark text-lg mb-1"
-          >
+          <div class="company-info">
             {{ if .company_link }}
             <a
               href="{{ .company_link }}"
               target="_blank"
               rel="noopener noreferrer"
-              class="group inline-flex items-center gap-2 text-xl font-medium text-text-secondary-light dark:text-text-secondary-dark hover:text-accent-light dark:hover:text-accent-dark transition-colors duration-200"
+              class="company-link"
             >
               {{ .company }}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="opacity-70 group-hover:opacity-100 transition-opacity duration-200"
+                class="external-icon"
               >
                 <path d="M7 17l9.2-9.2M17 17V7H7" />
               </svg>
             </a>
-            {{ else }} {{ .company }} {{ end }}
-          </div>
-          {{ end }}
-          <div class="flex flex-col md:flex-row md:items-center gap-1 mb-1">
-            <h3
-              class="text-3xl font-semibold text-text-primary-light dark:text-text-primary-dark"
-            >
-              {{ .role }}
-            </h3>
-          </div>
-          <div
-            class="period text-text-secondary-light dark:text-text-secondary-dark text-lg prose"
-          >
-            {{ .period }}
-          </div>
-          {{ if .country }}
-          <div
-            class="country text-text-secondary-light dark:text-text-secondary-dark text-lg prose"
-          >
-            {{ .country }}
-          </div>
-          {{ end }} {{ if .responsibilities }}
-          <div class="mt-4">
-            <h4
-              class="text-lg font-medium text-text-primary-light dark:text-text-primary-dark mb-3"
-            >
-              Key Responsibilities:
-            </h4>
-            <ul class="list-none space-y-2">
-              {{ range .responsibilities }}
-              <li
-                class="text-text-secondary-light dark:text-text-secondary-dark text-lg prose"
-              >
-                {{ . }}
-              </li>
-              {{ end }}
-            </ul>
-          </div>
-          {{ end }} {{ if .technologies }}
-          <div class="mt-4 flex flex-wrap gap-2">
-            {{ range .technologies }}
-            <span
-              class="px-3 py-1 text-sm bg-bg-primary-light dark:bg-bg-tertiary-dark text-text-secondary-light dark:text-text-secondary-dark rounded-full"
-              >{{ . }}</span
-            >
+            {{ else }}
+            <span class="company-name">{{ .company }}</span>
             {{ end }}
           </div>
-          {{ end }} {{ if eq .company "GitHub" }}
-          <div class="mt-4">
-            <a
-              href="{{ site.Params.github }}"
-              class="github-link inline-flex items-center gap-2 text-accent-light dark:text-accent-dark hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors duration-300 relative"
-            >
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                />
-              </svg>
-              <span class="text-sm">@{{ site.Params.github_username }}</span>
-            </a>
+          {{ end }}
+
+          <h3 class="role-title">{{ .role }}</h3>
+
+          <div class="experience-meta">
+            <span class="period">{{ .period }}</span>
+            {{ if .country }}
+            <span class="separator">•</span>
+            <span class="country">{{ .country }}</span>
+            {{ end }}
           </div>
+        </div>
+
+        {{ if .responsibilities }}
+        <div class="responsibilities-section">
+          <h4 class="section-heading">Key Responsibilities</h4>
+          <ul class="responsibilities-list">
+            {{ range .responsibilities }}
+            <li class="responsibility-item">
+              <svg class="bullet-icon" width="6" height="6" viewBox="0 0 6 6" fill="none">
+                <circle cx="3" cy="3" r="3" fill="currentColor"/>
+              </svg>
+              <span>{{ . }}</span>
+            </li>
+            {{ end }}
+          </ul>
+        </div>
+        {{ end }}
+
+        {{ if .technologies }}
+        <div class="technologies-section">
+          {{ range .technologies }}
+          <span class="tech-badge">{{ . }}</span>
           {{ end }}
         </div>
+        {{ end }}
+
+        {{ if eq .company "GitHub" }}
+        <div class="github-section">
+          <a
+            href="{{ site.Params.github }}"
+            class="github-link"
+          >
+            <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+              />
+            </svg>
+            <span>@{{ site.Params.github_username }}</span>
+          </a>
+        </div>
+        {{ end }}
       </div>
     </div>
     {{ end }} {{ else }}
-    <div
-      class="text-text-secondary-light dark:text-text-secondary-dark p-6 bg-bg-primary-light dark:bg-bg-secondary-dark rounded-lg border border-border-primary-light dark:border-border-primary-dark"
-    >
-      <p class="text-center">
+    <div class="no-data-message">
+      <p>
         No experience data found. Please add some experience entries to your
         site configuration.
       </p>
@@ -153,134 +112,364 @@
 </div>
 
 <style>
-  .prose {
-    color: #4b5563; /* text-secondary-light */
-    font-size: 1.25rem;
+  /* Timeline Container */
+  .experience-timeline {
+    position: relative;
+    max-width: 100%;
   }
-  html.dark .prose {
-    color: #9ca3af; /* text-secondary-dark */
+
+  /* Experience Item */
+  .experience-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
   }
-  .prose h1 {
-    @apply text-4xl font-bold mb-8;
-    color: #1f2937; /* text-primary-light */
+
+  .experience-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
-  html.dark .prose h1 {
-    color: #f3f4f6; /* text-primary-dark */
+
+  .experience-item:last-child .timeline-line {
+    display: none;
   }
-  .prose h2 {
-    @apply text-2xl font-semibold mt-8 mb-4;
-    color: #1f2937; /* text-primary-light */
+
+  /* Timeline Marker */
+  .timeline-marker {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  html.dark .prose h2 {
-    color: #f3f4f6; /* text-primary-dark */
+
+  .timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #1f2937;
+    box-shadow: 0 0 0 4px rgba(31, 41, 55, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
   }
-  .prose p {
-    color: #4b5563; /* text-secondary-light */
-    margin-bottom: 1.5rem; /* mb-6 */
-    line-height: 1.9;
+
+  html.dark .timeline-dot {
+    background: #f3f4f6;
+    box-shadow: 0 0 0 4px rgba(243, 244, 246, 0.1);
+  }
+
+  .experience-item:hover .timeline-dot {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 6px rgba(31, 41, 55, 0.15);
+  }
+
+  html.dark .experience-item:hover .timeline-dot {
+    box-shadow: 0 0 0 6px rgba(243, 244, 246, 0.15);
+  }
+
+  .timeline-line {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(180deg,
+      rgba(31, 41, 55, 0.3) 0%,
+      rgba(31, 41, 55, 0.1) 100%
+    );
+    margin-top: 0.5rem;
+  }
+
+  html.dark .timeline-line {
+    background: linear-gradient(180deg,
+      rgba(243, 244, 246, 0.3) 0%,
+      rgba(243, 244, 246, 0.1) 100%
+    );
+  }
+
+  /* Experience Content */
+  .experience-content {
+    padding: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .experience-item:hover .experience-content {
+    transform: translateX(4px);
+  }
+
+  /* Experience Header */
+  .experience-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .company-info {
+    margin-bottom: 0.5rem;
+  }
+
+  .company-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.01em;
   }
-  html.dark .prose p {
-    color: #9ca3af; /* text-secondary-dark */
+
+  html.dark .company-link {
+    color: #f3f4f6;
   }
-  .prose p + p {
+
+  .company-link:hover {
+    color: #4b5563;
+    gap: 0.75rem;
+  }
+
+  html.dark .company-link:hover {
+    color: #d1d5db;
+  }
+
+  .company-link .external-icon {
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  .company-link:hover .external-icon {
+    opacity: 1;
+  }
+
+  .company-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    letter-spacing: 0.01em;
+  }
+
+  html.dark .company-name {
+    color: #f3f4f6;
+  }
+
+  .role-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  html.dark .role-title {
+    color: #f3f4f6;
+  }
+
+  @media (min-width: 768px) {
+    .role-title {
+      font-size: 2.25rem;
+    }
+  }
+
+  .experience-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 1rem;
+    color: #6b7280;
+  }
+
+  html.dark .experience-meta {
+    color: #9ca3af;
+  }
+
+  .separator {
+    color: #d1d5db;
+  }
+
+  html.dark .separator {
+    color: #4b5563;
+  }
+
+  /* Responsibilities Section */
+  .responsibilities-section {
     margin-top: 2rem;
   }
-  .prose ul {
-    @apply list-disc list-inside space-y-2;
-    color: #4b5563; /* text-secondary-light */
-  }
-  html.dark .prose ul {
-    color: #9ca3af; /* text-secondary-dark */
-  }
-  .prose li {
-    color: #4b5563; /* text-secondary-light */
-  }
-  html.dark .prose li {
-    color: #9ca3af; /* text-secondary-dark */
-  }
-  .prose a {
-    @apply transition-colors duration-300;
-    color: #0284c7; /* accent-light */
-  }
-  .prose a:hover {
-    color: #0369a1; /* accent-light-hover */
-  }
-  html.dark .prose a {
-    color: #0ea5e9; /* accent-dark */
-  }
-  html.dark .prose a:hover {
-    color: #38bdf8; /* accent-dark-hover */
+
+  .section-heading {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
   }
 
-  .intro-section {
-    position: relative;
+  html.dark .section-heading {
+    color: #f3f4f6;
   }
 
-  .intro-section::after {
-    content: "";
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(156, 163, 175, 0.5),
-      transparent
-    ); /* border-secondary-light with alpha */
+  .responsibilities-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
-  .intro-section::after {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(107, 114, 128, 0.5),
-      transparent
-    ); /* border-secondary-dark with alpha */
+  .responsibility-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    color: #4b5563;
+    font-size: 1.0625rem;
+    line-height: 1.7;
   }
 
-  .stat-box {
-    @apply bg-bg-primary-light dark:bg-bg-tertiary-dark p-4 rounded-lg border border-border-primary-light dark:border-border-primary-dark flex-1 min-w-[120px] text-center transition-all duration-300;
+  html.dark .responsibility-item {
+    color: #9ca3af;
   }
 
-  .stat-box:hover {
-    @apply border-accent-light dark:border-accent-dark bg-bg-primary-light dark:bg-bg-tertiary-dark;
-    transform: translateY(-2px);
+  .bullet-icon {
+    margin-top: 0.6rem;
+    flex-shrink: 0;
+    color: #1f2937;
   }
 
-  .stat-number {
-    @apply text-3xl font-bold text-accent-light dark:text-accent-dark mb-1;
+  html.dark .bullet-icon {
+    color: #f3f4f6;
   }
 
-  .stat-label {
-    @apply text-sm text-text-secondary-light dark:text-text-secondary-dark;
+  /* Technologies Section */
+  .technologies-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    margin-top: 1.5rem;
+  }
+
+  .tech-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1f2937;
+    background-color: rgba(31, 41, 55, 0.08);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.01em;
+  }
+
+  html.dark .tech-badge {
+    color: #d1d5db;
+    background-color: rgba(243, 244, 246, 0.1);
+  }
+
+  .tech-badge:hover {
+    background-color: rgba(31, 41, 55, 0.15);
+    transform: translateY(-1px);
+  }
+
+  html.dark .tech-badge:hover {
+    background-color: rgba(243, 244, 246, 0.2);
+  }
+
+  /* GitHub Section */
+  .github-section {
+    margin-top: 1.5rem;
   }
 
   .github-link {
-    position: relative;
     display: inline-flex;
     align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #1f2937;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  html.dark .github-link {
+    color: #f3f4f6;
+  }
+
+  .github-link:hover {
+    color: #4b5563;
+    gap: 0.75rem;
+  }
+
+  html.dark .github-link:hover {
+    color: #d1d5db;
   }
 
   .github-link::after {
     content: "";
     position: absolute;
     width: 0;
-    height: 1px;
+    height: 1.5px;
     bottom: -2px;
     left: 0;
-    background-color: #0284c7; /* accent-light */
-    transition: width 0.3s ease-in-out;
+    background-color: #1f2937;
+    transition: width 0.3s ease;
+  }
+
+  html.dark .github-link::after {
+    background-color: #f3f4f6;
   }
 
   .github-link:hover::after {
     width: 100%;
   }
-  html.dark .github-link::after {
-    background-color: #0ea5e9; /* accent-dark */
+
+  .github-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* No Data Message */
+  .no-data-message {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6b7280;
+    font-size: 1.125rem;
+  }
+
+  html.dark .no-data-message {
+    color: #9ca3af;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .experience-item {
+      grid-template-columns: 32px 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 2.5rem;
+    }
+
+    .timeline-dot {
+      width: 12px;
+      height: 12px;
+    }
+
+    .role-title {
+      font-size: 1.75rem;
+    }
+
+    .company-link,
+    .company-name {
+      font-size: 1rem;
+    }
+
+    .experience-meta {
+      font-size: 0.9375rem;
+    }
+
+    .responsibility-item {
+      font-size: 1rem;
+    }
   }
 </style>
 {{ end }}
