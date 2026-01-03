@@ -116,96 +116,81 @@
     {{ $projects := .Pages }}
     {{ if $projects }}
     <section class="mb-20">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
-            <!-- Left Side: Title & View All -->
-            <div class="md:col-span-3">
-                <div class="md:sticky md:top-24 space-y-4">
-                    <h2 class="text-4xl md:text-5xl font-bold text-text-primary-light dark:text-text-primary-dark">
-                        {{ T "projectsTitle" }}
-                    </h2>
-                    <a
-                        href="{{ "projects/" | absLangURL }}"
-                        class="inline-flex items-center gap-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors duration-200 text-sm font-medium border border-border-primary-light dark:border-border-primary-dark px-4 py-2 rounded"
-                    >
-                        <span>{{ T "viewAll" }}</span>
-                    </a>
+        <div class="projects-section-layout">
+            <!-- Left Column: Icon + Title + View All -->
+            <div class="section-header">
+                <!-- Icon -->
+                <div class="section-icon-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
                 </div>
+                <!-- Title -->
+                <h2 class="section-title-text">
+                    {{ T "projectsTitle" }}
+                </h2>
+                <!-- View All Button -->
+                <a href="{{ "projects/" | absLangURL }}" class="section-view-all-btn">
+                    {{ T "viewAll" }}
+                </a>
             </div>
 
-            <!-- Right Side: Project Cards -->
-            <div class="md:col-span-9">
-                <div class="space-y-12">
-                    {{ range first 3 $projects }}
-                    <article class="project-card">
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-                            <!-- Project Image -->
-                            <div class="md:col-span-7">
-                                <div class="relative overflow-hidden border border-border-primary-light dark:border-border-primary-dark">
-                                    <div class="aspect-video w-full">
-                                        {{ if .Params.image }}
-                                        <img
-                                            src="{{ .Params.image }}"
-                                            alt="{{ .Title }}"
-                                            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                                        >
-                                        {{ else }}
-                                        <div class="w-full h-full bg-bg-secondary-light dark:bg-bg-secondary-dark flex items-center justify-center">
-                                            <span class="text-text-tertiary-light dark:text-text-tertiary-dark text-xl">{{ .Title }}</span>
-                                        </div>
-                                        {{ end }}
-                                    </div>
-                                </div>
+            <!-- Right Column: Project Cards -->
+            <div class="projects-content">
+                {{ range first 2 $projects }}
+                <article class="project-card">
+                    <!-- Project Title -->
+                    <h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark leading-tight" style="margin: 0 0 0.75rem 0; padding: 0;">
+                        {{ .Title }}
+                    </h3>
+
+                    <!-- Project Image -->
+                    <div class="relative overflow-hidden border border-border-primary-light dark:border-border-primary-dark bg-bg-primary-light dark:bg-bg-primary-dark" style="border-radius: 0.5rem; margin-bottom: 0.75rem;">
+                        <div style="aspect-ratio: 16 / 9; width: 100%;">
+                            {{ if .Params.image }}
+                            <img
+                                src="{{ .Params.image }}"
+                                alt="{{ .Title }}"
+                                class="w-full h-full object-cover"
+                                style="border-radius: 0.5rem;"
+                            >
+                            {{ else }}
+                            <div class="w-full h-full bg-bg-primary-light dark:bg-bg-primary-dark flex items-start justify-start p-4">
+                                <span class="text-text-primary-light dark:text-text-primary-dark text-sm opacity-70">{{ .Title }}</span>
                             </div>
-
-                            <!-- Project Info -->
-                            <div class="md:col-span-5 flex flex-col justify-center">
-                                <div class="space-y-3">
-                                    <h3 class="text-2xl md:text-3xl font-bold text-text-primary-light dark:text-text-primary-dark leading-tight">
-                                        {{ .Title }}
-                                    </h3>
-
-                                    <p class="text-text-secondary-light dark:text-text-secondary-dark leading-relaxed text-sm">
-                                        {{ if .Summary }}
-                                            {{ .Summary | plainify | truncate 120 }}
-                                        {{ else if .Description }}
-                                            {{ .Description | plainify | truncate 120 }}
-                                        {{ else }}
-                                            {{ .Content | plainify | truncate 120 }}
-                                        {{ end }}
-                                    </p>
-
-                                    {{ if .Params.link }}
-                                    <div class="pt-2">
-                                        <a
-                                            href="{{ .Params.link }}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="inline-flex items-center gap-2 text-text-primary-light dark:text-text-primary-dark hover:text-text-secondary-light dark:hover:text-text-secondary-dark font-medium transition-all duration-200 underline underline-offset-4 decoration-border-primary-light dark:decoration-border-primary-dark hover:decoration-text-primary-light dark:hover:decoration-text-primary-dark text-sm"
-                                        >
-                                            <span>Read Case Study</span>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="14"
-                                                height="14"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="transform group-hover/link:translate-x-1 transition-transform duration-200"
-                                            >
-                                                <path d="M7 17l9.2-9.2M17 17V7H7"></path>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                    {{ end }}
-                                </div>
-                            </div>
+                            {{ end }}
                         </div>
-                    </article>
+                    </div>
+
+                    <!-- Project Description (max 2 lines) -->
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm line-clamp-2" style="margin: 0 0 0.75rem 0; line-height: 1.5;">
+                        {{ if .Summary }}
+                            {{ .Summary | plainify }}
+                        {{ else if .Description }}
+                            {{ .Description | plainify }}
+                        {{ else }}
+                            {{ .Content | plainify | truncate 120 }}
+                        {{ end }}
+                    </p>
+
+                    <!-- View Project Link -->
+                    {{ if .Params.link }}
+                    <a
+                        href="{{ .Params.link }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1 text-text-primary-light dark:text-text-primary-dark hover:text-text-secondary-light dark:hover:text-text-secondary-dark text-sm font-medium transition-colors duration-200"
+                        style="text-decoration: underline; text-underline-offset: 4px;"
+                    >
+                        <span>Check Project</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 17l9.2-9.2M17 17V7H7"></path>
+                        </svg>
+                    </a>
                     {{ end }}
-                </div>
+                </article>
+                {{ end }}
             </div>
         </div>
     </section>

@@ -947,3 +947,57 @@ footer {
 .overflow-hidden {
     overflow: hidden;
 }
+
+/* ========================================
+   PROJECTS SECTION LAYOUT
+   ======================================== */
+
+/* 3-column layout: Projects | View All | Content */
+.projects-section-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .projects-section-layout {
+        grid-template-columns: auto auto 1fr;
+        gap: 2rem;
+        align-items: flex-start;
+    }
+}
+
+.projects-title {
+    display: flex;
+    align-items: flex-start;
+}
+
+.projects-title h2 {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.projects-viewall {
+    display: flex;
+    align-items: flex-start;
+}
+
+.projects-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card {
+    margin-bottom: 3rem;
+}
+
+.project-card:last-child {
+    margin-bottom: 0;
+}
+
+.project-card h3 {
+    margin-top: 0;
+    line-height: 1.2;
+}
