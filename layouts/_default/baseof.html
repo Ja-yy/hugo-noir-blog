@@ -12,48 +12,7 @@
         <link rel="manifest" href="{{ .Site.BaseURL }}favicon_io/site.webmanifest">
         <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
         <link rel="preload" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" as="style">
-        <style>
-            html, body {
-                background-color: #FFFFFF;
-                color: #1f2937;
-            }
-            html.dark, html.dark body {
-                background-color: #000000;
-                color: #f3f4f6;
-            }
-            .border {
-                border-color: #d4d4d8;
-            }
-            html.dark .border {
-                border-color: #374151;
-            }
-            .carousel-item {
-                display: inline-block;
-                margin: 0 1rem;
-            }
-            .flex {
-                display: flex;
-            }
-            .flex-col {
-                flex-direction: column;
-            }
-
-            @media (min-width: 768px) {
-                .md\:flex-row {
-                    flex-direction: row;
-                }
-            }
-
-            .tech-carousel {
-                overflow: hidden;
-                width: 100%;
-                padding: 1rem 0;
-            }
-
-            .carousel-track {
-                white-space: nowrap;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ "css/main.css" | absURL }}">
 
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
@@ -65,49 +24,98 @@
             }
         </script>
         <style>
+            /* ========================================
+               HUGO-NOIR COLOR SYSTEM
+               Edit these values to change theme colors
+               ======================================== */
+
             :root {
                 color-scheme: light dark;
+
+                /* --- LIGHT MODE COLORS --- */
+
+                /* Background colors */
+                --bg-primary: #FFFFFF;       /* White - Main page background */
+                --bg-secondary: #F5F5F5;     /* Light gray - Cards, sections */
+                --bg-tertiary: #E5E5E5;      /* Medium gray - Hover states */
+
+                /* Text colors */
+                --text-primary: #000000;     /* Black - Main headings and body text */
+                --text-secondary: #333333;   /* Dark gray - Secondary text */
+                --text-tertiary: #666666;    /* Medium gray - Muted text, timestamps */
+
+                /* Border colors */
+                --border-primary: #CCCCCC;   /* Light gray - Main borders, dividers */
+                --border-secondary: #E0E0E0; /* Very light gray - Subtle borders */
+
+                /* Accent colors */
+                --accent: #000000;           /* Black - Links, buttons, highlights */
+                --accent-hover: #333333;     /* Dark gray - Hover state */
+
+                /* Code colors */
+                --code-bg: #F5F5F5;          /* Light gray - Inline code background */
+                --code-text: #000000;        /* Black - Inline code text */
+                --code-block-bg: #1A1A1A;    /* Very dark gray - Code block background */
+                --code-block-border: #000000; /* Black - Code block border */
+
+                /* Special effects */
+                --shadow-sm: rgba(0, 0, 0, 0.05);
+                --shadow-md: rgba(0, 0, 0, 0.1);
+                --shadow-lg: rgba(0, 0, 0, 0.15);
+                --overlay-light: rgba(0, 0, 0, 0.5);
+                --overlay-medium: rgba(0, 0, 0, 0.7);
+                --overlay-heavy: rgba(0, 0, 0, 0.9);
+
+                /* Gradient colors */
+                --gradient-blue-from: rgba(0, 0, 0, 0.1);
+                --gradient-blue-to: rgba(0, 0, 0, 0.2);
             }
 
-            .tech-icon {
-                filter: grayscale(100%) brightness(200%);
-                transition: all 0.3s ease;
-            }
-            .tech-icon:hover {
-                filter: none;
+            html.dark {
+                /* --- DARK MODE COLORS --- */
+
+                /* Background colors */
+                --bg-primary: #000000;       /* Black - Main page background */
+                --bg-secondary: #1A1A1A;     /* Very dark gray - Cards, sections */
+                --bg-tertiary: #2A2A2A;      /* Dark gray - Hover states */
+
+                /* Text colors */
+                --text-primary: #FFFFFF;     /* White - Main headings and body text */
+                --text-secondary: #CCCCCC;   /* Light gray - Secondary text */
+                --text-tertiary: #999999;    /* Medium gray - Muted text, timestamps */
+
+                /* Border colors */
+                --border-primary: #333333;   /* Dark gray - Main borders, dividers */
+                --border-secondary: #2A2A2A; /* Very dark gray - Subtle borders */
+
+                /* Accent colors */
+                --accent: #FFFFFF;           /* White - Links, buttons, highlights */
+                --accent-hover: #CCCCCC;     /* Light gray - Hover state */
+
+                /* Code colors */
+                --code-bg: #1A1A1A;          /* Very dark gray - Inline code background */
+                --code-text: #FFFFFF;        /* White - Inline code text */
+                --code-block-bg: #0A0A0A;    /* Almost black - Code block background */
+                --code-block-border: #333333; /* Dark gray - Code block border */
+
+                /* Special effects */
+                --shadow-sm: rgba(255, 255, 255, 0.05);
+                --shadow-md: rgba(255, 255, 255, 0.1);
+                --shadow-lg: rgba(255, 255, 255, 0.15);
+                --overlay-light: rgba(0, 0, 0, 0.3);
+                --overlay-medium: rgba(0, 0, 0, 0.5);
+                --overlay-heavy: rgba(0, 0, 0, 0.75);
+
+                /* Gradient colors */
+                --gradient-blue-from: rgba(255, 255, 255, 0.1);
+                --gradient-blue-to: rgba(255, 255, 255, 0.2);
             }
 
-            @keyframes scroll {
-                0% {
-                    transform: translateX(0);
-                }
-                100% {
-                    transform: translateX(-100%);
-                }
-            }
-
-            .tech-carousel {
-                width: 100%;
-                padding: 1rem 0;
-            }
-
-            .tech-track {
-                width: fit-content;
-                animation: scroll 20s linear infinite;
-            }
-
-            .tech-track:hover {
-                animation-play-state: paused;
-            }
-
-            .tech-slide {
-                float: left;
-            }
         </style>
     </head>
-    <body class="min-h-screen bg-bg-primary-light dark:bg-bg-primary-dark text-text-primary-light dark:text-text-primary-dark">
+    <body class="min-h-screen bg-bg-primary-light dark:bg-bg-primary-dark text-text-primary-light dark:text-text-primary-dark flex flex-col">
         {{ partial "header" . }}
-        <main>
+        <main class="flex-grow">
             {{ block "main" . }}{{ end }}
         </main>
         {{ partial "footer" . }}
